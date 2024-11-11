@@ -1,6 +1,8 @@
-# Learning topology-preserving data representations (ICLR 2023)
 
-This repository contains code base for the paper which introduces a novel method for global structure preserving dimensionality rediction based on Topological Data Analysis (TDA), specifically Representation Topology Divergence (RTD).
+
+
+
+# Student project forked from "Learning topology-preserving data representations" (ICLR 2023)
 
 ## Description
 
