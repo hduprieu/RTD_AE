@@ -25,6 +25,7 @@ class TopologicallyRegularizedAutoencoder(pl.LightningModule):
         self.rtd_l = rtd_l
         self.MSELoss = MSELoss
         toposig_kwargs = toposig_kwargs if toposig_kwargs else {}
+        self.validation_step_outputs = []
         self.topo_sig = TopologicalSignatureDistance(**toposig_kwargs)
         self.latent_norm = torch.nn.Parameter(data=torch.ones(1),
                                               requires_grad=True)
@@ -72,10 +73,12 @@ class TopologicallyRegularizedAutoencoder(pl.LightningModule):
         self.log('val/top_loss',  topo_loss)
         loss = mse_loss + self.rtd_l * topo_loss
         self.log('val/loss', loss)
+        self.validation_step_outputs.append((x, latent, y))
         return x, latent, y
     
-    def validation_epoch_end(self, validation_step_outputs):
+    def on_validation_epoch_end(self):
         logger = self.logger.experiment
+        validation_step_outputs = self.validation_step_outputs
         if self.current_epoch % 5 == 0:
             xs, zs, ys = [], [], []
             for x, z, y in validation_step_outputs:
