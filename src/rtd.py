@@ -31,7 +31,7 @@ def get_indicies(DX, rc, dim, card):
     
     # Output indices
     indices = indices[:4*card] + [0 for _ in range(0,max(0,4*card-len(indices)))]
-    return list(np.array(indices, dtype=np.compat.long))
+    return list(np.array(indices, dtype=np.long))
 
 def Rips(DX, dim, card, n_threads, engine):
     # Parameters: DX (distance matrix), 

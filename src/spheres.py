@@ -22,13 +22,13 @@ def create_sphere_dataset(n_samples=500, d=100, n_spheres=11, r=5, plot=False, s
     spheres = [] 
     n_datapoints = 0
     for i in np.arange(n_spheres-1):
-        sphere = dsphere(n=n_samples, d=d, r=r)
+        sphere = dsphere(n=n_samples, d=d, r=r)[0]
         spheres.append(sphere + shift_matrix[i,:])
         n_datapoints += n_samples
 
     #Additional big surrounding sphere:
     n_samples_big = 10*n_samples #int(n_samples/2)
-    big = dsphere(n=n_samples_big, d=d, r=r*5)
+    big = dsphere(n=n_samples_big, d=d, r=r*5)[0]
     spheres.append(big)
     n_datapoints += n_samples_big
 
@@ -46,7 +46,7 @@ def create_sphere_dataset(n_samples=500, d=100, n_spheres=11, r=5, plot=False, s
     labels = np.zeros(n_datapoints) 
     label_index=0
     for index, data in enumerate(spheres):
-        n_sphere_samples = data.shape[0]
+        n_sphere_samples = data[0].shape[0]
         labels[label_index:label_index + n_sphere_samples] = index
         label_index += n_sphere_samples
     

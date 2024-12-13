@@ -5,6 +5,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 import pytorch_lightning as pl
+import time
 
 from .utils import plot_latent_tensorboard, calculate_wasserstein_distance
 
@@ -46,6 +47,7 @@ class AutoEncoder(pl.LightningModule):
         z = self.encoder(x)  
         x_hat = self.decoder(z)
         loss = 0.0
+        step_time = time.time()
         if self.MSELoss is not None:
             loss += self.MSELoss(x_hat, x)
             self.log('train/mse_loss', loss)
@@ -57,6 +59,7 @@ class AutoEncoder(pl.LightningModule):
                 self.log('train/rtd_loss_xz', loss_xz)
                 self.log('train/rtd_loss_zx', loss_zx)
                 loss += self.rtd_l*rtd_loss
+        self.log('train/step_time', time.time()-step_time)
         self.log('train/loss', loss)
         return loss
 
